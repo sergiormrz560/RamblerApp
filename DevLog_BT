@@ -49,4 +49,26 @@ D) Created Message Handler
 	- Copied content from old project
 	- had to import RemoteMessage & Log
 
+E) Displayed Push Notification
+	- https://medium.com/@nileshsingh/how-to-add-push-notification-capability-to-your-android-app-a3cac745e56e
+	`
+	void showNotifications(String title, String msg){
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Notification notification = new NotificationCompat.Builder(this)
+                .setContentText(msg)
+                .setContentTitle(title)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .build();
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(NOTIFICATION_ID, notification);
+    }
+	`
+	- NOTIFICATION_ID & REQUEST_CODE are both private members of the class
+	`
+	private static final int REQUEST_CODE = 1;
+    private static final int NOTIFICATION_ID = 6578;
+    `
