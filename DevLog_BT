@@ -10,6 +10,8 @@ Brendan Thompson
 I) === Summary: ===
 	A) Emulated New Project on Linux
 	B) Added Firebase to the App
+	C) Register devices with the Firebase console
+	D) Created Message Handler
 
 II) === Takeaways: ===
 
@@ -33,5 +35,18 @@ B) Added Firebase to the App
 		1) Connect to Firebase -> Choose an existing Firebase or Google project -> Transylvania Rambler
 		2) Add FCM to your app -> accept changes
 			- adds dependencies to build.gradle & app/build.gradle
+
+C) Register devices with the Firebase console
+	- Right click on "java" in project inspector -> New -> java class
+	- FirebaseDeviceRegistration.java
+	- Inherit from FirebaseInstanceIdService
+	- copied content from old project
+	- had to import FirebaseInstanceId & Log
+
+D) Created Message Handler
+	- Right click on "app" in project inspector -> new -> service -> service
+	- FirebaseMessageHandler
+	- Copied content from old project
+	- had to import RemoteMessage & Log
 
 
