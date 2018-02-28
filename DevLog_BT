@@ -1,0 +1,37 @@
+DevLog for Rambler
+Brendan Thompson
+
+==============================
+
+==============================
+========== 02/28/18 ==========
+==============================
+
+I) === Summary: ===
+	A) Emulated New Project on Linux
+	B) Added Firebase to the App
+
+II) === Takeaways: ===
+
+III) === Resources: ===
+
+- Resetting head locally and remotely
+	- https://ncona.com/2011/07/how-to-delete-a-commit-in-git-local-and-remote/
+	- https://stackoverflow.com/questions/29616173/how-to-reset-to-my-last-commit-in-android-studio
+
+III) === Log: ===
+
+A) Emulated New Project on Linux
+	- File -> New -> Project from Version Control -> GitHub
+	- Used URL and set destination folder
+	- Error: “android studio please select android sdk”
+		- https://stackoverflow.com/questions/34353220/android-studio-please-select-android-sdk
+		- Fix: Tools -> Android -> Sync Project with Gradle Files
+
+B) Added Firebase to the App
+	- Tools -> Firebase -> Cloud Messaging -> Set up cloud messaging
+		1) Connect to Firebase -> Choose an existing Firebase or Google project -> Transylvania Rambler
+		2) Add FCM to your app -> accept changes
+			- adds dependencies to build.gradle & app/build.gradle
+
+
