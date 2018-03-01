@@ -1,7 +1,39 @@
 DevLog for Rambler
 Brendan Thompson
+==============================
 
 ==============================
+========== 03/01/18 ==========
+==============================
+
+I) === Summary: ===
+	A) Renamed App
+	B) Set app icon
+
+II) === Takeaways: ===
+
+III) === Resources: ===
+
+IV) === Log: ===
+
+A) Renamed App
+	- AndroidManifest.xml
+	- android:label="@string/app_name"
+	- res > values > styles.xml
+	- <string name="app_name">Rambler</string>
+
+B) Set app icon
+	- copied over all of the folders from the OG project
+	- res > drawable > mipmap-*
+
+C) Set colors
+    <color name="colorPrimary">#9D2336</color>
+    <color name="colorPrimaryDark">#8D1E2F</color>
+    <color name="colorPrimaryLight">#CE2C45</color>
+    <color name="colorSecondary">#DFD1A8</color>
+    <color name="colorTertiary">#C4BFB5</color>
+    <color name="colorOffBlack">#303030</color>
+    <color name="colorAccent">#DFD1A8</color>
 
 ==============================
 ========== 02/28/18 ==========
@@ -21,7 +53,7 @@ III) === Resources: ===
 	- https://ncona.com/2011/07/how-to-delete-a-commit-in-git-local-and-remote/
 	- https://stackoverflow.com/questions/29616173/how-to-reset-to-my-last-commit-in-android-studio
 
-III) === Log: ===
+IV) === Log: ===
 
 A) Emulated New Project on Linux
 	- File -> New -> Project from Version Control -> GitHub
