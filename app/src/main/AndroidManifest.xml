@@ -22,6 +22,10 @@
         <service
             android:name=".FirebaseMessageHandler"
             android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".FirebaseDeviceRegistration"
+            android:enabled="true"
             android:exported="true"></service>
     </application>
 
