@@ -3,30 +3,84 @@ Brendan Thompson
 ==============================
 
 ==============================
-========== 03/01/18 ==========
+========== 03/03/18 ==========
 ==============================
 
 I) === Summary: ===
-	A) Renamed App
-	B) Set app icon
+	A) Continued trying to subscribe to Push Notification Plugin API
 
 II) === Takeaways: ===
 
 III) === Resources: ===
 
 IV) === Log: ===
+	A) Continued trying to subscribe to Push Notification Plugin API
+		- Added FirebaseDeviceRegistration as a Service
+		- Found a different Server Key on Firebase
+			- "Legacy Server Key": AIzaSyBA0x9f7aOUKcK7dn16h39uo1F6HYkU9vM
+			- "Server Key": AAAA1x34GAk:APA91bGfJAirRlRPTQpjimUCNeOyeU4tKqb3wTgszLzkwBTQelspiZ_2KksOPN4p1apim5qLqfRUfWByEQJSrfPE10oZGAVQGU1oCkTjNXJ8iIqZL1OB4nXCGP3u013WeMWPgvzbYtKE
 
-A) Renamed App
+
+
+
+
+==============================
+========== 03/01/18 ==========
+==============================
+
+I) === Summary: ===
+	A) Started syncing Wordpress plugin with Firebase
+	B) Renamed App
+	C) Set app icon
+	D) Set colors
+	E) Registered App with API
+
+II) === Takeaways: ===
+	- Push Notifications are a lot harder than expected
+		A) Just syncing the API key hasn't worked with test posts
+			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/configuring-android-push-notifications/
+		B) trying to POST to the API to subscribe has been a pain
+			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/documentation/#appsubscribers
+			- "Warning:(23, 14) The `<service> FirebaseDeviceRegistration` is not registered in the manifest"
+	- Still looks possible to setup category subscriptions for notifications
+		- On WordPress -> Push Notifications -> General -> "Categories Filterable by App Subscribers"
+			a) Categories (category)
+			b) Tags (post_tag)
+			c) Format (post_format)
+			d) Photo Gallery (bwg_tag)
+
+III) === Resources: ===
+
+	- My Old DevLog: https://github.com/brenthompson2/Rambler_Android/blob/bt_layout_prototype_sidenav/DevLog
+
+IV) === Log: ===
+
+A) Started syncing Wordpress plugin with Firebase
+	1) Get Web API Key from Firebase
+		- Project Overview -> Settings for the app -> General
+		- AlzaSyAnGpizXSy1arufbBFUCpzjJKg7b3CFwsU
+	2) Setup Android Notifications
+		A) Push Notifications -> General
+			- check "Send Push Notifications"
+			- check "Send Push Notifications for Posts"
+			** This is where it looks like subscribers can be filtered
+		B) Push Notifications -> Android
+		- Check "send push notifications to Android devices"
+		- Add Server Key from A.1
+	3) Doesn't appear to have worked
+
+B) Renamed App
 	- AndroidManifest.xml
 	- android:label="@string/app_name"
 	- res > values > styles.xml
 	- <string name="app_name">Rambler</string>
+	- had to clean up modules.xml
 
-B) Set app icon
+C) Set app icon
 	- copied over all of the folders from the OG project
 	- res > drawable > mipmap-*
 
-C) Set colors
+D) Set colors
     <color name="colorPrimary">#9D2336</color>
     <color name="colorPrimaryDark">#8D1E2F</color>
     <color name="colorPrimaryLight">#CE2C45</color>
@@ -34,6 +88,15 @@ C) Set colors
     <color name="colorTertiary">#C4BFB5</color>
     <color name="colorOffBlack">#303030</color>
     <color name="colorAccent">#DFD1A8</color>
+
+E) Registered App with API using Http Post
+	1) Created Post Request sender
+		- Post Request: https://stackoverflow.com/questions/42767249/android-post-request-with-json
+		- Making JSON object: https://stackoverflow.com/questions/34681158/write-json-to-a-file
+		- import URL, HttpURLConnection, DataOutputStream, JSONObject, JSONException
+	B) Added FirebaseDeviceRegistration.java to manifest
+		- https://firebase.google.com/docs/cloud-messaging/android/start/
+		- "Warning:(23, 14) The `<service> FirebaseDeviceRegistration` is not registered in the manifest"
 
 ==============================
 ========== 02/28/18 ==========
@@ -44,6 +107,7 @@ I) === Summary: ===
 	B) Added Firebase to the App
 	C) Register devices with the Firebase console
 	D) Created Message Handler
+	E) Displayed Push Notification
 
 II) === Takeaways: ===
 

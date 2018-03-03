@@ -1,4 +1,5 @@
-import android.os.AsyncTask;
+package com.example.sergiorm.testramblerapp;
+
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -11,15 +12,6 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by bt on 2/28/18.
- *
- * App automatically synced with Firebase
- * Had to register for Wordpress plugin
- *
- */
-
-// Class for Registering the AppID with servers
 public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
 
     private static final String TAG = "Registering";
@@ -33,7 +25,6 @@ public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
         final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed Token: " + refreshedToken);
 
-        // This is where the InstanceID should be sent to the server for registration
         registerForPushNotifications(refreshedToken);
     }
 
@@ -54,7 +45,7 @@ public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
                     conn.setDoInput(true);
 
                     // Create JSON Object
-                    JSONObject jsonParam = getMessage(token);
+                    JSONObject jsonParam = createRegistrationMessage(token);
 
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
@@ -76,8 +67,8 @@ public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
         thread.start();
     }
 
-    // getMessage = Create the JSONObject to register for Push Notifications For Wordpress
-    private JSONObject getMessage(String token){
+    // createRegistrationMessage = Create the JSONObject to register for Push Notifications For Wordpress
+    private JSONObject createRegistrationMessage(String token){
         JSONObject obj = new JSONObject();
         try {
             obj.put("token", token);
