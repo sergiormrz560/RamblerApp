@@ -7,21 +7,57 @@ Brendan Thompson
 ==============================
 
 I) === Summary: ===
-	A) Continued trying to subscribe to Push Notification Plugin API
+	A) Struggling to get push Notifications when new posts are made
+	B) Hypothesized possible Push Notification issues
+	C) Changed Status bar color to same as Toolbar
 
 II) === Takeaways: ===
 
 III) === Resources: ===
 
 IV) === Log: ===
-	A) Continued trying to subscribe to Push Notification Plugin API
-		- Added FirebaseDeviceRegistration as a Service
-		- Found a different Server Key on Firebase
+
+A) Continued trying to subscribe to Push Notification Plugin API
+	1) Firebase sends the notifications fine
+	2) Added FirebaseDeviceRegistration as a Service
+		- now it is in the right place but still isn't registering with the plugin
+	3) Found a different Server Key on Firebase to use with the plugin
+		- "Legacy Server Key": AIzaSyBA0x9f7aOUKcK7dn16h39uo1F6HYkU9vM
+			- also referred to as Web API Key
+		- "Server Key": AAAA1x34GAk:APA91bGfJAirRlRPTQpjimUCNeOyeU4tKqb3wTgszLzkwBTQelspiZ_2KksOPN4p1apim5qLqfRUfWByEQJSrfPE10oZGAVQGU1oCkTjNXJ8iIqZL1OB4nXCGP3u013WeMWPgvzbYtKE
+	4) Switched back and forth between using the "Notification Message" and the "Data Message"
+		- Notification Message = Firebase Cloud Messaging automatically displays the message to end-user devices on behalf of the client app
+			- This would be ideal and should be automatic
+		- Data Message = Client app is responsible for processing data messages
+			- We should be set up to handle this
+		- From the plugin's FAQ: "When I send a notification from Firebase console everything works properly, while when I send them from the plugin nothing is received. What should I do?"
+			- "With the Notification message Firebase automatically displays the message to end-user devices on behalf of the client app. With the Data message client app is responsible for processing data messages."
+			- "You can enable Notification messages in the Settings → Android → Firebase enabling Use the Notification message instead of the Data message"
+			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/faqs/
+		- It definitely looks like "Notification Message" should work automatically without a handler
+
+B) Possible Push Notification issues
+	1) App must be registered with the plugin
+		a) since we are using FCM and a Server key we shouldn't need to do this (See part 2)
+		b) The "Configuring Android Push Notifications" tutorial from Delite Studio does not mention anything about registering
+			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/configuring-android-push-notifications/
+		c) The "Documentation" from Delite Studios says to connect the App using the Register API
+			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/documentation/
+			- could this be specifically for the paid version?
+		d) The FirebaseDeviceRegistration service I wrote sends the POST request to the API but it doesn't appear to be working
+			- Url: http://dk5.151.myftpupload.com/pnfw/register/
+			- Perhaps it won't work because it is a staging site?
+	2) Plugin isn't communicating with Firebase
+		a) Since we are sending a notification message, Firebase Cloud Messaging (FCM) should handle showing the notification on the device on behalf of the app
+		b) Neither Server Key appears to be working
 			- "Legacy Server Key": AIzaSyBA0x9f7aOUKcK7dn16h39uo1F6HYkU9vM
+				- also referred to as Web API Key
 			- "Server Key": AAAA1x34GAk:APA91bGfJAirRlRPTQpjimUCNeOyeU4tKqb3wTgszLzkwBTQelspiZ_2KksOPN4p1apim5qLqfRUfWByEQJSrfPE10oZGAVQGU1oCkTjNXJ8iIqZL1OB4nXCGP3u013WeMWPgvzbYtKE
+	3) Notifications wont be sent if the app is running in the background
+		- I tested sending notifications with the emulator & the phone running the app in the foreground
 
-
-
+C) Changed Status bar color to same as Toolbar
+	- although inspecting the website returned #303030, in the emulator they are the same color when the status bar is #202020
 
 
 ==============================
