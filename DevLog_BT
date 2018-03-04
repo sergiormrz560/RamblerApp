@@ -13,7 +13,15 @@ I) === Summary: ===
 
 II) === Takeaways: ===
 
+	- Not receiving the Push Notification when new posts received
+		- See part B
+
 III) === Resources: ===
+
+A) Delite Studio
+	- Configuring Android Push Notifications: https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/configuring-android-push-notifications/
+	- FAQ: https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/faqs/
+	- Documentation: https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/documentation/
 
 IV) === Log: ===
 
@@ -24,7 +32,7 @@ A) Continued trying to subscribe to Push Notification Plugin API
 	3) Found a different Server Key on Firebase to use with the plugin
 		- "Legacy Server Key": AIzaSyBA0x9f7aOUKcK7dn16h39uo1F6HYkU9vM
 			- also referred to as Web API Key
-		- "Server Key": AAAA1x34GAk:APA91bGfJAirRlRPTQpjimUCNeOyeU4tKqb3wTgszLzkwBTQelspiZ_2KksOPN4p1apim5qLqfRUfWByEQJSrfPE10oZGAVQGU1oCkTjNXJ8iIqZL1OB4nXCGP3u013WeMWPgvzbYtKE
+		- "Server Key": AAAA1x34GAk:APA91bFQucale_QEiB1pz1zT_A35SvmTFRAK7nc-69q_IS6tTVQLeHZl0Xwc-nu8o75QDNbW0nW5KfH-ge1nH6_ftphgh5cWKzMY_z5oANSkHbfczMRExPVgej84nx-lRSYB1e8a6btT
 	4) Switched back and forth between using the "Notification Message" and the "Data Message"
 		- Notification Message = Firebase Cloud Messaging automatically displays the message to end-user devices on behalf of the client app
 			- This would be ideal and should be automatic
@@ -44,20 +52,24 @@ B) Possible Push Notification issues
 		c) The "Documentation" from Delite Studios says to connect the App using the Register API
 			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/documentation/
 			- could this be specifically for the paid version?
-		d) The FirebaseDeviceRegistration service I wrote sends the POST request to the API but it doesn't appear to be working
+		d) The FirebaseDeviceRegistration service I wrote to send the POST request to the API doesn't appear to be working
 			- Url: http://dk5.151.myftpupload.com/pnfw/register/
 			- Perhaps it won't work because it is a staging site?
+			- Once it works the phone should appear in the Plugin interface under the "Tokens" section
+		E) Perhaps I need to create a different class specifically for this, but based off the comments when connecting to Firebase I think the FirebaseInstanceIdService is exactly the place to do it
 	2) Plugin isn't communicating with Firebase
 		a) Since we are sending a notification message, Firebase Cloud Messaging (FCM) should handle showing the notification on the device on behalf of the app
 		b) Neither Server Key appears to be working
 			- "Legacy Server Key": AIzaSyBA0x9f7aOUKcK7dn16h39uo1F6HYkU9vM
 				- also referred to as Web API Key
-			- "Server Key": AAAA1x34GAk:APA91bGfJAirRlRPTQpjimUCNeOyeU4tKqb3wTgszLzkwBTQelspiZ_2KksOPN4p1apim5qLqfRUfWByEQJSrfPE10oZGAVQGU1oCkTjNXJ8iIqZL1OB4nXCGP3u013WeMWPgvzbYtKE
+			- "Server Key": AAAA1x34GAk:APA91bFQucale_QEiB1pz1zT_A35SvmTFRAK7nc-69q_IS6tTVQLeHZl0Xwc-nu8o75QDNbW0nW5KfH-ge1nH6_ftphgh5cWKzMY_z5oANSkHbfczMRExPVgej84nx-lRSYB1e8a6btT
 	3) Notifications wont be sent if the app is running in the background
 		- I tested sending notifications with the emulator & the phone running the app in the foreground
 
 C) Changed Status bar color to same as Toolbar
 	- although inspecting the website returned #303030, in the emulator they are the same color when the status bar is #202020
+	- Had to change the "Dark" version of the primary color
+		- Res > colors.xml > colorPrimaryDark
 
 
 ==============================
@@ -77,7 +89,7 @@ II) === Takeaways: ===
 			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/configuring-android-push-notifications/
 		B) trying to POST to the API to subscribe has been a pain
 			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/documentation/#appsubscribers
-			- "Warning:(23, 14) The `<service> FirebaseDeviceRegistration` is not registered in the manifest"
+			- Current Issue: "Warning:(23, 14) The `<service> FirebaseDeviceRegistration` is not registered in the manifest"
 	- Still looks possible to setup category subscriptions for notifications
 		- On WordPress -> Push Notifications -> General -> "Categories Filterable by App Subscribers"
 			a) Categories (category)
@@ -146,6 +158,9 @@ I) === Summary: ===
 	E) Displayed Push Notification
 
 II) === Takeaways: ===
+
+	- To get push notifications the app needs to register with Firebase Cloud Messaging and also have a Message Handler. Then the plugin sends the notification to the web API telling Firebase to send the message
+	- Firebase messages are coming through
 
 III) === Resources: ===
 
