@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#9D2336</color>
-    <color name="colorPrimaryDark">#8D1E2F</color>
+    <color name="colorPrimaryDark">#202020</color> <!--8D1E2F-->
     <color name="colorPrimaryLight">#CE2C45</color>
     <color name="colorSecondary">#DFD1A8</color>
     <color name="colorTertiary">#C4BFB5</color>
-    <color name="colorOffBlack">#303030</color>
+    <color name="colorOffBlack">#202020</color>
 
     <color name="colorAccent">#DFD1A8</color>
 </resources>
