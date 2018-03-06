@@ -32,19 +32,20 @@ public class MainActivity extends Activity {
         //added code
         webSettings.setAllowFileAccess(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        myWebView.setWebChromeClient(new WebChromeClient());
 
         webSettings.setDomStorageEnabled(true);
         webSettings.setAppCacheEnabled(true);
         webSettings.setAppCachePath(getApplicationContext().getFilesDir().getAbsolutePath() + "/cache");
         webSettings.setDatabaseEnabled(true);
         webSettings.setMediaPlaybackRequiresUserGesture(false);
+
+
+        myWebView.setWebChromeClient(new WebChromeClient());
         //
 
         myWebView.setWebViewClient(new WebViewClient());
 
-
-        myWebView.loadUrl("http://dk5.151.myftpupload.com/");
+        myWebView.loadUrl("https://www.transyrambler.com/");
     }
 
     @Override
