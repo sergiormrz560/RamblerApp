@@ -23,8 +23,7 @@ import java.net.URL;
 public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
 
     private static final String TAG = "Device Registration";
-
-    String urlAdress = "https://www.transyrambler.com/pnfw/register/";
+    final String urlAdress = "https://www.transyrambler.com/pnfw/register/";
 
     // onTokenRefresh = Get Updated InstanceID Token
     @Override
@@ -41,12 +40,13 @@ public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
     private void registerForPushNotifications(final String token) {
 
         Log.d(TAG, "Attempting to register with the WP PN Plugin");
+        Log.d(TAG, "Device ID: " + token);
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    // Set Headers
+                    // Prepare to Connect
                     URL url = new URL(urlAdress);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
@@ -55,19 +55,20 @@ public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
 
-                    // Create JSON Object
-                    JSONObject jsonParam = createRegistrationMessage(token);
-                    Log.i(TAG, "JSON Data: " + jsonParam.toString());
+                    // Create JSON Data Object
+                    JSONObject jsonData = createRegistrationMessage(token);
+                    Log.i(TAG, "JSON Data: " + jsonData.toString());
 
+                    // Output the Data
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    os.writeBytes(jsonParam.toString());
+                    os.writeBytes(jsonData.toString());
                     os.flush();
                     os.close();
+                    conn.disconnect();
 
+                    // Log Response
                     Log.i(TAG, "STATUS:" + String.valueOf(conn.getResponseCode()));
                     Log.i(TAG , "MSG: " + conn.getResponseMessage());
-
-                    conn.disconnect();
                 } catch (Exception e) {
                     Log.d(TAG, "Failed to register with the WP PN Plugin");
                     e.printStackTrace();
@@ -78,12 +79,16 @@ public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
         thread.start();
     }
 
-    // createRegistrationMessage = Create the JSONObject to register for Push Notifications For Wordpress
+    // Returns the JSONObject to register for Push Notifications For Wordpress
     private JSONObject createRegistrationMessage(String token){
         JSONObject obj = new JSONObject();
         try {
             obj.put("token", token);
+            // obj.put("prevToken", prevToken); // Optional
             obj.put("os", "Android");
+            // obj.put("email", userEmail); // Optional
+            // obj.put("userCategory", userCategory); // Optional
+            // obj.put("lang", "en"); // Optional
         } catch (JSONException e) {
             e.printStackTrace();
         }
