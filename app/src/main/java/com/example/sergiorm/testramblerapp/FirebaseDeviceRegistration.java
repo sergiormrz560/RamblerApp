@@ -12,11 +12,19 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+//  FirebaseDeviceRegistration class for registering the device for Push Notifications
+//
+//  Automatically registers the device with Firebase (super.onTokenRefresh())
+//
+//  Attempting to register the device with the Push Notification WordPress Plugin
+//  Plugin: Push Notifications for Wordpress Lite
+//  Documentation: https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/documentation/
+
 public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
 
-    private static final String TAG = "Registering";
+    private static final String TAG = "Device Registration";
 
-    String urlAdress = "http://dk5.151.myftpupload.com/pnfw/register/"; // URL of user registration for the staging site
+    String urlAdress = "https://www.transyrambler.com/pnfw/register/";
 
     // onTokenRefresh = Get Updated InstanceID Token
     @Override
@@ -25,11 +33,14 @@ public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
         final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed Token: " + refreshedToken);
 
+        // Register with the Push Notification Service
         registerForPushNotifications(refreshedToken);
     }
 
-    // Sends the HTTP Post Request to register for push notifications
+    // Sends the HTTP Post Request to register with the WordPress Plugin
     private void registerForPushNotifications(final String token) {
+
+        Log.d(TAG, "Attempting to register with the WP PN Plugin");
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -46,19 +57,19 @@ public class FirebaseDeviceRegistration extends FirebaseInstanceIdService {
 
                     // Create JSON Object
                     JSONObject jsonParam = createRegistrationMessage(token);
+                    Log.i(TAG, "JSON Data: " + jsonParam.toString());
 
-                    Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     os.writeBytes(jsonParam.toString());
-
                     os.flush();
                     os.close();
 
-                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
-                    Log.i("MSG" , conn.getResponseMessage());
+                    Log.i(TAG, "STATUS:" + String.valueOf(conn.getResponseCode()));
+                    Log.i(TAG , "MSG: " + conn.getResponseMessage());
 
                     conn.disconnect();
                 } catch (Exception e) {
+                    Log.d(TAG, "Failed to register with the WP PN Plugin");
                     e.printStackTrace();
                 }
             }
