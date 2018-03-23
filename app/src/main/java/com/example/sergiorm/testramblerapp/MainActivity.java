@@ -3,6 +3,7 @@ package com.example.sergiorm.testramblerapp;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -10,13 +11,16 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -84,35 +88,47 @@ public class MainActivity extends Activity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    // Prepare to Connect
-                    URL url = new URL(urlAdress);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                    conn.setRequestProperty("Accept","application/json");
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
+            try {
+                // Prepare to Connect
+                URL url = new URL(urlAdress);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Length", "application/json;charset=UTF-8");
+                conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                conn.setRequestProperty("Accept","application/json");
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                conn.setInstanceFollowRedirects(true);
+                conn.setChunkedStreamingMode(0);
 
-                    // Create JSON Data Object
-                    JSONObject jsonData = createRegistrationMessage(token);
-                    Log.i(TAG, "JSON Data: " + jsonData.toString());
+                // Create JSON Data Object
+                JSONObject jsonData = createRegistrationMessage(token);
+                Log.i(TAG, "JSON Data: " + jsonData.toString());
 
-                    // Output the Data
-                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    os.writeBytes(jsonData.toString());
-                    os.flush();
-                    os.close();
-                    conn.disconnect();
+                // Output the Data
+                DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                os.writeBytes(jsonData.toString());
 
-                    // Log Response
-                    Log.i(TAG, "STATUS:" + String.valueOf(conn.getResponseCode()));
-                    Log.i(TAG , "MSG: " + conn.getResponseMessage());
-                } catch (Exception e) {
-                    Log.d(TAG, "Failed to register with the WP PN Plugin");
-                    e.printStackTrace();
-                }
-            }
+                os.flush();
+                os.close();
+
+                // Log Response
+                // TODO: Log Response to get details of error code 500
+                //
+                Log.d(TAG, "STATUS:" + String.valueOf(conn.getResponseCode()));
+                Log.d(TAG , "MSG: " + conn.getResponseMessage());
+
+                conn.disconnect();
+
+            } catch (Exception e) {
+                Log.d(TAG, "Failed to register with the WP PN Plugin");
+                e.printStackTrace();
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Push Notification Failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }}
         });
 
         thread.start();

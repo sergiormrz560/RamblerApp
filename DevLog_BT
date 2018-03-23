@@ -3,6 +3,79 @@ Brendan Thompson
 ==============================
 
 ==============================
+========== 03/22/18 ==========
+==============================
+
+I) === Summary: ===
+	A) Attempted to register the device with the Push Notification Server Plugin
+	B) Checked Prerequisites
+
+II) === Takeaways: ===
+
+	A) Android Skill: Get Context from a thread on a fragment
+		- https://stackoverflow.com/questions/3134683/android-toast-in-a-thread
+		- Call run on UIThread
+		`
+	        MainActivity.this.runOnUiThread(new Runnable() {
+	            public void run() {
+	                Toast.makeText(MainActivity.this, "Push Notification Failure", Toast.LENGTH_SHORT).show();
+	            }
+	        });
+	    `
+	B) Current issue
+		- appears to be talking to the server but getting a 500 Internal Server Error
+
+III) === Resources: ===
+
+	- Get Context from a thread on a fragment: https://stackoverflow.com/questions/3134683/android-toast-in-a-thread
+
+IV) === Log: ===
+
+A) Attempted to register the device with the Push Notification Server Plugin
+	1) created new branch push_notification_testing
+	2) Properly Logged to console and saw registration code not running
+		- called within onTokenRefresh() which prob doesn't happen ever
+	3) Moved all code for Registration to main Activity
+	4) Caught an Exception
+		- `java.net.SocketException: Socket closed`
+		- Same exception when running on phone
+		- Looks to be an issue with the server
+			- attempting to make sure it is open / active / whatever
+		- Solution: Moved debug statement to above where I closed the connection and it fixed
+	5) Error code 301: Moved Permanently
+		- conn.setInstanceFollowRedirects(true);
+		- changed to https
+		- https://stackoverflow.com/questions/43398845/android-httpurlconnection-object-returns-error-301-after-connection/43399478
+	6) Error code 500: Internal Server Error
+		- Delite says: "on missing mandatory parameters, unknown operating system, or general failure."
+		- Same exception when running on phone
+		- if I could parse the response data it returns a message with the details
+			- see Errors section of 4.1
+			- https://www.delitestudio.com/wordpress/push-notifications-for-wordpress/documentation/#gettingStarted
+		a) Perhaps it is the format of the json object
+		b) Perhaps it is the headers (content-length)
+			- conn.setChunkedStreamingMode(0);
+				- https://developer.android.com/reference/java/net/HttpURLConnection.html
+		c)
+
+
+
+
+B) Checked Prerequisites
+	- https://wordpress.org/plugins/push-notifications-for-wp/
+	1) Wordpress 3.5+, tested up to 4.9.4
+		- ours = 4.9.4
+	2) PHP 5.3 or later, recommended 5.5+
+		- ours = 5.6.32-78
+		- had to log into the database phpMyAdmin
+			- "View" button in Settings for the Site on GoDaddy
+	3) Inbound and outbound TCP packets over ports 2195 and 2196 (for iOS notifications)
+		- didn't check
+	4) PHP’s cURL support (for Android notifications).
+		- I think thats already native to wordpress
+
+
+==============================
 ========== 03/03/18 ==========
 ==============================
 
