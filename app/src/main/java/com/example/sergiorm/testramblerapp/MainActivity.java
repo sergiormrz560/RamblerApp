@@ -101,23 +101,41 @@ public class MainActivity extends Activity {
                 conn.setInstanceFollowRedirects(true);
                 conn.setChunkedStreamingMode(0);
 
-                // Create JSON Data Object
+                // Create JSON Data Object for parameters
                 JSONObject jsonData = createRegistrationMessage(token);
                 Log.i(TAG, "JSON Data: " + jsonData.toString());
 
-                // Output the Data
+                // Do the HTTP POST
                 DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                 os.writeBytes(jsonData.toString());
-
                 os.flush();
                 os.close();
 
                 // Log Response
-                // TODO: Log Response to get details of error code 500
-                //
                 Log.d(TAG, "STATUS:" + String.valueOf(conn.getResponseCode()));
                 Log.d(TAG , "MSG: " + conn.getResponseMessage());
 
+                // Parse JSON Data returned in response
+                if ((200 < conn.getResponseCode()) && (conn.getResponseCode() < 299)){
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String output;
+                    while ((output = br.readLine()) != null){
+                        sb.append(output);
+                    }
+                    Log.d(TAG, "RESPONSE: " + sb.toString());
+                }
+                else {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String output;
+                    while ((output = br.readLine()) != null){
+                        sb.append(output);
+                    }
+                    Log.d(TAG, "RESPONSE: " + sb.toString());
+                }
+
+                // Shutdown Connection
                 conn.disconnect();
 
             } catch (Exception e) {
