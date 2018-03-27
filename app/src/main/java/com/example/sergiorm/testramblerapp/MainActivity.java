@@ -23,6 +23,7 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 
 public class MainActivity extends Activity {
@@ -93,9 +94,8 @@ public class MainActivity extends Activity {
                 URL url = new URL(urlAdress);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Length", "application/json;charset=UTF-8");
-                conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                conn.setRequestProperty("Accept","application/json");
+                conn.setReadTimeout(15000);
+                conn.setConnectTimeout(15000);
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
                 conn.setInstanceFollowRedirects(true);
@@ -104,10 +104,12 @@ public class MainActivity extends Activity {
                 // Create JSON Data Object for parameters
                 JSONObject jsonData = createRegistrationMessage(token);
                 Log.i(TAG, "JSON Data: " + jsonData.toString());
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept","application/json");
 
                 // Do the HTTP POST
                 DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                os.writeBytes(jsonData.toString());
+                os.writeUTF("msg=" + URLEncoder.encode (jsonData.toString (), "UTF-8"));
                 os.flush();
                 os.close();
 
@@ -157,8 +159,8 @@ public class MainActivity extends Activity {
         JSONObject obj = new JSONObject();
         try {
             obj.put("token", token);
-            // obj.put("prevToken", prevToken); // Optional
             obj.put("os", "Android");
+            // obj.put("prevToken", prevToken); // Optional
             // obj.put("email", userEmail); // Optional
             // obj.put("userCategory", userCategory); // Optional
             // obj.put("lang", "en"); // Optional

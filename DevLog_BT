@@ -3,6 +3,49 @@ Brendan Thompson
 ==============================
 
 ==============================
+========== 03/27/18 ==========
+==============================
+
+I) === Summary: ===
+	A) Successfully printed response data from device registration
+	B) Tried to fix error with Parameters
+
+II) === Takeaways: ===
+
+	- When registering with the Push Notification Service getting error "Mandatory parameter os mising"
+		- Possibilities:
+			A) Something with encoding (UTF-8)
+			B) The JSON may not be being built properly
+				- Some examples are duplicating the parameter and setting it equal to itself
+					- `jsonData.toString() + " = " + jsonData.toString()`
+				- Maybe the JSONobject object isn't correct
+			C) The headers could be messed up
+
+III) === Resources: ===
+
+	- Print Error Response Stream: https://stackoverflow.com/questions/25011927/how-to-get-response-body-using-httpurlconnection-when-code-other-than-2xx-is-re
+
+IV) === Log: ===
+
+A) Successfully printed response data from device registration
+	- thanks to Kelsey who found this resource for me to try: https://stackoverflow.com/questions/25011927/how-to-get-response-body-using-httpurlconnection-when-code-other-than-2xx-is-re
+	- read the response into a BufferedReader and then print
+	- `{"error":"500","reason":"Internal Server Error","detail":"Mandatory parameter os missing"}`
+
+B) Tried to fix error with Parameters
+	- `Mandatory parameter os missing`
+	- Same error message when os is only parameter
+	- Possibilities:
+		A) Something with encoding (UTF-8)
+		B) The JSON may not be being built properly
+			- Some examples are duplicating the parameter and setting it equal to itself
+				- `jsonData.toString() + " = " + jsonData.toString()`
+			- Maybe the JSONobject object isn't correct
+		C) The headers could be messed up
+
+
+
+==============================
 ========== 03/22/18 ==========
 ==============================
 
@@ -56,7 +99,6 @@ A) Attempted to register the device with the Push Notification Server Plugin
 		b) Perhaps it is the headers (content-length)
 			- conn.setChunkedStreamingMode(0);
 				- https://developer.android.com/reference/java/net/HttpURLConnection.html
-		c)
 
 
 
