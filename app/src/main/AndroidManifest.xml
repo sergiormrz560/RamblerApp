@@ -17,6 +17,8 @@
         <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="true" />
 
+        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT" android:value="DISABLE" />
+
         <activity android:name=".MainActivity"
             android:configChanges="orientation|screenSize">
 
@@ -35,8 +37,7 @@
         <service
             android:name=".FirebaseDeviceRegistration"
             android:enabled="true"
-            android:exported="true"></service>
-
+            android:exported="true"/>
 
     </application>
 

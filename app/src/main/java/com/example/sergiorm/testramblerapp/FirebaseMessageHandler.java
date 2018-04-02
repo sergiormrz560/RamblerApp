@@ -10,12 +10,18 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+/**
+ *  Class for handling the reception of push notifications from Firebase
+ *  May or may not be being used for the OneSignal push notification plugin
+ */
+
 public class FirebaseMessageHandler extends FirebaseMessagingService {
 
     private static final String TAG = "MessageHandlerFirebase";
     private static final int REQUEST_CODE = 1;
     private static final int NOTIFICATION_ID = 6578;
 
+    // Constructor
     public FirebaseMessageHandler() {
 
     }
