@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
-        android:allowBackup="true">
+        android:allowBackup="true"
+        android:name=".ApplicationClass"> <!--https://documentation.onesignal.com/docs/create-application-class-android-studio-->
 
         <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="true" />

@@ -1,3 +1,14 @@
+//begin: https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
+plugins {
+    id 'com.onesignal.androidsdk.onesignal-gradle-plugin' version '0.8.1'
+}
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
+//end: https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
+
 apply plugin: 'com.android.application'
 
 android {
@@ -9,6 +20,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //begin https://onesignal.com/apps/d3889ea9-c007-42a1-8add-3bd1cc50f31a?restartEditAppFlow=true
+        manifestPlaceholders = [onesignal_app_id: "d3889ea9-c007-42a1-8add-3bd1cc50f31a",
+                                // Project number pulled from dashboard, local value is ignored.
+                                onesignal_google_project_number: "923920766985"]
+        //end https://onesignal.com/apps/d3889ea9-c007-42a1-8add-3bd1cc50f31a?restartEditAppFlow=true
     }
     buildTypes {
         release {
@@ -26,6 +42,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'com.onesignal:OneSignal:[3.8.3, 3.99.99]' //https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
 }
 
 
