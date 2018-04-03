@@ -38,7 +38,10 @@ public class ApplicationClass extends Application {
         public void notificationOpened(OSNotificationOpenResult result) {
             OSNotificationAction.ActionType actionType = result.action.type;
             JSONObject data = result.notification.payload.additionalData;
+            String launchURL = result.notification.payload.launchURL;
             String dataFromNotification;
+
+            Log.d(TAG, launchURL);
 
             //String stationName = data.optString("stationName");
             //String timestamp = data.optString("timestamp");
@@ -62,9 +65,9 @@ public class ApplicationClass extends Application {
             }
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("launchURL", launchURL);
             //intent.putExtra("stationName", stationName);
             //intent.putExtra("time", timestamp);
-//            intent.putExtra("url", url);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }

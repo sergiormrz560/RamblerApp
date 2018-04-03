@@ -32,6 +32,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String launchURL;
+        if (getIntent().getStringExtra("launchURL") != null) {
+            launchURL = getIntent().getStringExtra("launchURL");
+        } else {
+            launchURL = "https://www.transyrambler.com/";
+        }
+        Log.d(TAG, launchURL);
+
         if (savedInstanceState == null) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.activity_main);
@@ -98,8 +107,9 @@ public class MainActivity extends Activity {
                     MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(3846);
                 }
             });
-            myWebView.loadUrl("http://ggt.bf8.myftpupload.com/");
-          //  myWebView.loadUrl("https://www.transyrambler.com/");
+//            myWebView.loadUrl("http://ggt.bf8.myftpupload.com/");
+//            myWebView.loadUrl("https://www.transyrambler.com/");
+            myWebView.loadUrl(launchURL);
         }
     }
 
