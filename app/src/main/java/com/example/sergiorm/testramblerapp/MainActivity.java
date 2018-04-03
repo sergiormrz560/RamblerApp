@@ -3,10 +3,12 @@ package com.example.sergiorm.testramblerapp;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebChromeClient;
@@ -15,10 +17,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import com.onesignal.OSNotificationAction;
+import com.onesignal.OSNotificationOpenResult;
+import com.onesignal.OneSignal;
+
+import org.json.JSONObject;
+
 
 public class MainActivity extends Activity {
     private WebView myWebView;
-
+    private static final String TAG = "MainActivity";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -90,8 +98,8 @@ public class MainActivity extends Activity {
                     MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(3846);
                 }
             });
-          //  myWebView.loadUrl("http://ggt.bf8.myftpupload.com/")
-            myWebView.loadUrl("https://www.transyrambler.com/");
+            myWebView.loadUrl("http://ggt.bf8.myftpupload.com/");
+          //  myWebView.loadUrl("https://www.transyrambler.com/");
         }
     }
 
@@ -119,4 +127,6 @@ public class MainActivity extends Activity {
         super.onRestoreInstanceState(savedInstanceState);
         myWebView.restoreState(savedInstanceState);
     }
+
+
 }
