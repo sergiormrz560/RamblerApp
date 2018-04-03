@@ -3,6 +3,156 @@ Brendan Thompson
 ==============================
 
 ==============================
+========== 04/03/18 ==========
+==============================
+
+I) === Summary: ===
+	A) Got launchURL in NotificationOpenHandler
+	B) Used launchURL in MainActivity
+
+II) === Takeaways: ===
+
+	- Fully Functioning Push Notifications
+
+III) === Resources: ===
+
+	- Example getting launchURL from Intent: https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/AndroidStudio/app/src/main/java/com/onesignal/example/GreenActivity.java
+	- Example getting launchURL from notification: https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/AndroidStudio/app/src/main/java/com/onesignal/example/ExampleApplication.java
+
+IV) === Log: ===
+
+A) Got launchURL in NotificationOpenHandler
+	- https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/AndroidStudio/app/src/main/java/com/onesignal/example/ExampleApplication.java
+	- launchURL was a separate field in the notification payload
+	- Passing to MainActivity as an Extra on the intent
+	`
+	// Handles what happens when a notification is fired (tapped on)
+    class NotificationOpenHandler implements OneSignal.NotificationOpenedHandler {
+        private static final String TAG = "NotificationOpenHandler";
+
+        @Override
+        public void notificationOpened(OSNotificationOpenResult result) {
+
+            // Get Data passed with Notification
+//            OSNotificationAction.ActionType actionType = result.action.type;
+//            JSONObject data = result.notification.payload.additionalData;
+//            String dataFromNotification;
+
+            // Get LaunchURL
+            String launchURL = result.notification.payload.launchURL;
+            Log.d(TAG, launchURL);
+
+            // Create Intent
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("launchURL", launchURL); // Add launchURL as extra
+            startActivity(intent);
+        }
+    }
+    `
+
+B) Used launchURL in MainActivity
+	- https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/AndroidStudio/app/src/main/java/com/onesignal/example/GreenActivity.java
+		`
+		// Get URL to open in WebView
+        String launchURL;
+        if (getIntent().getStringExtra("launchURL") != null) {
+            // launchURL from Notification: https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/AndroidStudio/app/src/main/java/com/onesignal/example/GreenActivity.java
+            launchURL = getIntent().getStringExtra("launchURL");
+        } else {
+            launchURL = "https://www.transyrambler.com/"; // Official Site URL
+			// myWebView.loadUrl("http://ggt.bf8.myftpupload.com/"); // Staging Site URL
+        }
+        Log.d(TAG, launchURL);
+        `
+
+==============================
+========== 04/02/18 ==========
+==============================
+
+I) === Summary: ===
+	A) Switched to OneSignal push notifications
+	B) Registered the devices with OneSignal
+	C) Overwrote NotificationOpenedHandler
+
+II) === Takeaways: ===
+
+	- Getting the push notifications, handling what happens when it is opened, but not finding the launchURL
+
+III) === Resources: ===
+
+	- OneSignal Android Setup: https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
+
+IV) === Log: ===
+
+A) Switched to OneSignal push notifications
+	- Switched the plugin on WordPress to OneSignal
+	- Configured on Website & on Plugin
+
+B) Registered the devices with OneSignal
+	- https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
+	- brought in dependencies to build.gradle files
+		`
+		plugins {
+		    id 'com.onesignal.androidsdk.onesignal-gradle-plugin' version '0.8.1'
+		}
+		apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+		repositories {
+		    maven { url 'https://maven.google.com' }
+		}
+		`
+	- Initialized the app with OneSignal in ApplicationClass
+		`
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .setNotificationOpenedHandler(new NotificationOpenHandler())
+                .init();
+        `
+
+C) Overwrote NotificationOpenedHandler in ApplicationClass
+	- Not getting any data (looking for launchURL)
+		`class NotificationOpenHandler implements OneSignal.NotificationOpenedHandler {
+	        // This fires when a notification is opened by tapping on it.
+	        private static final String TAG = "NotificationOpenHandler";
+
+	        @Override
+	        public void notificationOpened(OSNotificationOpenResult result) {
+	            OSNotificationAction.ActionType actionType = result.action.type;
+	            JSONObject data = result.notification.payload.additionalData;
+	            String dataFromNotification;
+
+	            //String stationName = data.optString("stationName");
+	            //String timestamp = data.optString("timestamp");
+	            //String filename = data.optString("filename");
+	//            String url = getString(R.string.callResourceUrl) + filename;
+	            //Log.d(TAG, data.toString());
+
+	            // Get Data from notification
+	            if (data != null) {
+	                dataFromNotification = data.optString("dataFromNotification", null);
+	                if (dataFromNotification != null){
+	                    Log.d(TAG, "dataFromNotification set with value: " + dataFromNotification);
+
+	                    // Add data as extra to intent https://stackoverflow.com/questions/29866450/how-to-send-data-back-to-mainactivity
+	//                    intent.putExtra("dataFromNotification", dataFromNotification);
+	                } else {
+	                    Log.d(TAG, "No dataFromNotification");
+	                }
+	            } else {
+	                Log.d(TAG, "No Data");
+	            }
+
+	            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+				// intent.putExtra("url", url);
+	            startActivity(intent);
+	        }
+
+	    }
+	    `
+
+
+==============================
 ========== 03/03/18 ==========
 ==============================
 

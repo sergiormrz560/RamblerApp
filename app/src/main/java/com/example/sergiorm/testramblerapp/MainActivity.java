@@ -23,6 +23,13 @@ import com.onesignal.OneSignal;
 
 import org.json.JSONObject;
 
+/**
+ *  MainActivity for Rambler Mobile Application
+ *
+ *  Manages the WebView
+ *
+ *  Created by Brendan Thompson, Sergio Ramirez Martin, and Kelsey Clater Winter 2018
+ */
 
 public class MainActivity extends Activity {
     private WebView myWebView;
@@ -33,14 +40,18 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Get URL to open in WebView
         String launchURL;
         if (getIntent().getStringExtra("launchURL") != null) {
+            // launchURL from Notification: https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/AndroidStudio/app/src/main/java/com/onesignal/example/GreenActivity.java
             launchURL = getIntent().getStringExtra("launchURL");
         } else {
-            launchURL = "https://www.transyrambler.com/";
+            launchURL = "https://www.transyrambler.com/"; // Official Site URL
+//            myWebView.loadUrl("http://ggt.bf8.myftpupload.com/"); // Staging Site URL
         }
         Log.d(TAG, launchURL);
 
+        // Use same instance (fixed issue where rotation re-set URL)
         if (savedInstanceState == null) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.activity_main);

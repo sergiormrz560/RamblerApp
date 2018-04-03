@@ -1,4 +1,4 @@
-//begin: https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
+// OneSignal Dependencies: https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
 plugins {
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin' version '0.8.1'
 }
@@ -7,7 +7,7 @@ apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 repositories {
     maven { url 'https://maven.google.com' }
 }
-//end: https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
+// End OneSignal
 
 apply plugin: 'com.android.application'
 
@@ -42,8 +42,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.onesignal:OneSignal:[3.8.3, 3.99.99]' //https://documentation.onesignal.com/docs/android-sdk-setup#section-android-studio
+    compile 'com.onesignal:OneSignal:[3.8.3, 3.99.99]' // OneSignal
 }
-
 
 apply plugin: 'com.google.gms.google-services'
