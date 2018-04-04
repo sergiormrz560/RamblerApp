@@ -3,9 +3,11 @@ package com.example.sergiorm.testramblerapp;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,12 +18,18 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.onesignal.OSNotificationAction;
 import com.onesignal.OSNotificationOpenResult;
 import com.onesignal.OneSignal;
 
 import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import static android.provider.CalendarContract.CalendarCache.URI;
 
 /**
  *  MainActivity for Rambler Mobile Application
@@ -74,11 +82,25 @@ public class MainActivity extends Activity {
             webSettings.setMediaPlaybackRequiresUserGesture(false);
             //
 
-            myWebView.setWebViewClient(new WebViewClient(){
-                public boolean shouldOverrideUrlLoading(WebView paramWebView, String paramString)
-                {
-                    paramWebView.loadUrl(paramString);
-                    return true;
+            myWebView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                   if (Uri.parse(url).getScheme().equals("spotify")||Uri.parse(url).getScheme().equals("market")) {
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, URI);
+                            intent.setData(Uri.parse(url));
+                            Activity host = (Activity) view.getContext();
+                            host.startActivity(intent);
+                            return true;
+                        }
+                        catch (ActivityNotFoundException e) {
+                            // Google Play app is not installed, you may want to open the app store link
+                            Uri uri = Uri.parse(url);
+                            view.loadUrl("http://play.google.com/store/apps/" + uri.getHost() + "?" + uri.getQuery());
+                            return false;
+                        }
+                    }
+                    return false;
                 }
             });
 
@@ -136,18 +158,14 @@ public class MainActivity extends Activity {
 
 
     @Override
-    protected void onSaveInstanceState(Bundle outState )
-    {
+    protected void onSaveInstanceState(Bundle outState ) {
         super.onSaveInstanceState(outState);
         myWebView.saveState(outState);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         myWebView.restoreState(savedInstanceState);
     }
-
-
 }
