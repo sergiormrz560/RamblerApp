@@ -7,17 +7,25 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+//import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.onesignal.OSNotificationAction;
@@ -28,6 +36,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Handler;
 
 import static android.provider.CalendarContract.CalendarCache.URI;
 
@@ -42,14 +51,25 @@ import static android.provider.CalendarContract.CalendarCache.URI;
 public class MainActivity extends Activity {
     private WebView myWebView;
     private static final String TAG = "MainActivity";
-
+/*
+    private LinearLayout mlLayoutRequestError = null;
+    private Handler mhErrorLayoutHide = null;
+    private boolean mbErrorOccured = false;
+    private boolean mbReloadPressed = false;
+*/
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_main);
+/*
+        ((Button) findViewById(R.id.button)).setOnClickListener(this);
+        mlLayoutRequestError = (LinearLayout) findViewById(R.id.lLayoutRequestError);
+        mhErrorLayoutHide = getErrorLayoutHideHandler();
+*/
         // Get URL to open in WebView
-        String launchURL;
+        final String launchURL;
         if (getIntent().getStringExtra("launchURL") != null) {
             // launchURL from Notification: https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/AndroidStudio/app/src/main/java/com/onesignal/example/GreenActivity.java
             launchURL = getIntent().getStringExtra("launchURL");
@@ -60,13 +80,9 @@ public class MainActivity extends Activity {
         Log.d(TAG, launchURL);
 
         // Use same instance (fixed issue where rotation re-set URL)
-        if (savedInstanceState == null) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setContentView(R.layout.activity_main);
-
+        //if (savedInstanceState == null) {
             myWebView = findViewById(R.id.webView);
             WebSettings webSettings = myWebView.getSettings();
-
 
             webSettings.setBuiltInZoomControls(true);
             webSettings.setDisplayZoomControls(false);
@@ -82,10 +98,17 @@ public class MainActivity extends Activity {
             webSettings.setMediaPlaybackRequiresUserGesture(false);
             //
 
+        final Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                myWebView.loadUrl(launchURL);
+            }
+        });
+
             myWebView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                   if (Uri.parse(url).getScheme().equals("spotify")||Uri.parse(url).getScheme().equals("market")) {
+                   if (Uri.parse(url).getScheme().equals("spotify")||Uri.parse(url).getScheme().equals("market")||url.startsWith("intent://")) {
                         try {
                             Intent intent = new Intent(Intent.ACTION_VIEW, URI);
                             intent.setData(Uri.parse(url));
@@ -101,6 +124,26 @@ public class MainActivity extends Activity {
                         }
                     }
                     return false;
+                }
+
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    // TODO Auto-generated method stub
+                   // myWebView.loadUrl("file://android_asset/noconnection.html");
+                  //  unconnected();
+                    super.onReceivedError(view, errorCode, description, failingUrl);
+                    view.loadUrl("about:blank");
+                    unconnected();
+                }
+
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    visible();
+                }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    unvisible();
                 }
             });
 
@@ -140,8 +183,18 @@ public class MainActivity extends Activity {
                     MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(3846);
                 }
             });
-//            myWebView.loadUrl("http://ggt.bf8.myftpupload.com/");
-//            myWebView.loadUrl("https://www.transyrambler.com/");
+
+            myWebView.setDownloadListener(new DownloadListener() {
+                public void onDownloadStart(String url, String userAgent,
+                                            String contentDisposition, String mimetype,
+                                            long contentLength) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+
+                }
+            });
+        if (savedInstanceState == null) {
             myWebView.loadUrl(launchURL);
         }
     }
@@ -167,5 +220,68 @@ public class MainActivity extends Activity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         myWebView.restoreState(savedInstanceState);
+    }
+    /*
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == R.id.button) {
+            if (!mbErrorOccured) {
+                return;
+            }
+
+            mbReloadPressed = true;
+            mWebView.reload();
+            mbErrorOccured = false;
+        }
+    }*/
+
+    static int num = 0;
+    public void visible(){
+        if(num == 0) {
+            WebView webview = findViewById(R.id.webView);
+            ImageView logo = findViewById(R.id.imageView);
+            ProgressBar bar = findViewById(R.id.progressBar);
+            TextView version = findViewById(R.id.textView);
+            Button button = findViewById(R.id.button);
+            webview.setVisibility(View.GONE);
+            logo.setVisibility(View.VISIBLE);
+            bar.setVisibility(View.VISIBLE);
+            version.setVisibility(View.VISIBLE);
+            button.setVisibility(View.GONE);
+            num = num+1;
+        }
+    }
+
+    public void unvisible(){
+        WebView webview =  findViewById(R.id.webView);
+        ImageView logo =  findViewById(R.id.imageView);
+        ProgressBar bar =  findViewById(R.id.progressBar);
+        TextView version = findViewById(R.id.textView);
+        Button button = findViewById(R.id.button);
+        webview.setVisibility(View.VISIBLE);
+        logo.setVisibility(View.GONE);
+        bar.setVisibility(View.GONE);
+        version.setVisibility(View.GONE);
+        button.setVisibility(View.GONE);
+    }
+
+    public void unconnected(){
+        WebView webview =  findViewById(R.id.webView);
+        ImageView logo =  findViewById(R.id.imageView);
+        ProgressBar bar =  findViewById(R.id.progressBar);
+        TextView version = findViewById(R.id.textView);
+        Button button = findViewById(R.id.button);
+        webview.setVisibility(View.GONE);
+        logo.setVisibility(View.GONE);
+        bar.setVisibility(View.GONE);
+        version.setVisibility(View.GONE);
+      //  button.setText("Reload");
+      //  button.setTextColor(Color.WHITE);
+       // button.setBackgroundColor(Color.BLUE);
+        button.setVisibility(View.VISIBLE);
+        Log.d(TAG, "Unconnected");
+        num = 0;
     }
 }
