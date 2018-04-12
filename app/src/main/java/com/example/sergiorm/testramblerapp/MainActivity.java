@@ -51,23 +51,13 @@ import static android.provider.CalendarContract.CalendarCache.URI;
 public class MainActivity extends Activity {
     private WebView myWebView;
     private static final String TAG = "MainActivity";
-/*
-    private LinearLayout mlLayoutRequestError = null;
-    private Handler mhErrorLayoutHide = null;
-    private boolean mbErrorOccured = false;
-    private boolean mbReloadPressed = false;
-*/
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-/*
-        ((Button) findViewById(R.id.button)).setOnClickListener(this);
-        mlLayoutRequestError = (LinearLayout) findViewById(R.id.lLayoutRequestError);
-        mhErrorLayoutHide = getErrorLayoutHideHandler();
-*/
+
         // Get URL to open in WebView
         final String launchURL;
         if (getIntent().getStringExtra("launchURL") != null) {
@@ -129,10 +119,8 @@ public class MainActivity extends Activity {
                 @Override
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                     // TODO Auto-generated method stub
-                   // myWebView.loadUrl("file://android_asset/noconnection.html");
-                  //  unconnected();
                     super.onReceivedError(view, errorCode, description, failingUrl);
-                    view.loadUrl("about:blank");
+                    myWebView.loadUrl("about:blank");
                     unconnected();
                 }
 
@@ -244,12 +232,14 @@ public class MainActivity extends Activity {
             ImageView logo = findViewById(R.id.imageView);
             ProgressBar bar = findViewById(R.id.progressBar);
             TextView version = findViewById(R.id.textView);
+            TextView broken = findViewById(R.id.broken);
             Button button = findViewById(R.id.button);
             webview.setVisibility(View.GONE);
             logo.setVisibility(View.VISIBLE);
             bar.setVisibility(View.VISIBLE);
             version.setVisibility(View.VISIBLE);
-            button.setVisibility(View.GONE);
+            button.setVisibility(View.INVISIBLE);
+            broken.setVisibility(View.INVISIBLE);
             num = num+1;
         }
     }
@@ -259,12 +249,10 @@ public class MainActivity extends Activity {
         ImageView logo =  findViewById(R.id.imageView);
         ProgressBar bar =  findViewById(R.id.progressBar);
         TextView version = findViewById(R.id.textView);
-        Button button = findViewById(R.id.button);
         webview.setVisibility(View.VISIBLE);
         logo.setVisibility(View.GONE);
         bar.setVisibility(View.GONE);
         version.setVisibility(View.GONE);
-        button.setVisibility(View.GONE);
     }
 
     public void unconnected(){
@@ -272,16 +260,15 @@ public class MainActivity extends Activity {
         ImageView logo =  findViewById(R.id.imageView);
         ProgressBar bar =  findViewById(R.id.progressBar);
         TextView version = findViewById(R.id.textView);
+        TextView broken = findViewById(R.id.broken);
         Button button = findViewById(R.id.button);
-        webview.setVisibility(View.GONE);
+        webview.setVisibility(View.VISIBLE);
         logo.setVisibility(View.GONE);
         bar.setVisibility(View.GONE);
         version.setVisibility(View.GONE);
-      //  button.setText("Reload");
-      //  button.setTextColor(Color.WHITE);
-       // button.setBackgroundColor(Color.BLUE);
         button.setVisibility(View.VISIBLE);
-        Log.d(TAG, "Unconnected");
+        broken.setVisibility(View.VISIBLE);
+       /// Log.d(TAG, "Unconnected");
         num = 0;
     }
 }
