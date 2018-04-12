@@ -49,8 +49,9 @@ import static android.provider.CalendarContract.CalendarCache.URI;
  */
 
 public class MainActivity extends Activity {
-    private WebView myWebView;
+    private WebView myWebView, webView2;
     private static final String TAG = "MainActivity";
+    private String launchURL;
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,10 +60,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // Get URL to open in WebView
-        final String launchURL;
+        //final String launchURL;
         if (getIntent().getStringExtra("launchURL") != null) {
             // launchURL from Notification: https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/Examples/AndroidStudio/app/src/main/java/com/onesignal/example/GreenActivity.java
             launchURL = getIntent().getStringExtra("launchURL");
+            num = 3;
         } else {
             launchURL = "https://www.transyrambler.com/"; // Official Site URL
 //            myWebView.loadUrl("http://ggt.bf8.myftpupload.com/"); // Staging Site URL
@@ -72,6 +74,7 @@ public class MainActivity extends Activity {
         // Use same instance (fixed issue where rotation re-set URL)
         //if (savedInstanceState == null) {
             myWebView = findViewById(R.id.webView);
+            webView2 = findViewById(R.id.webView2);
             WebSettings webSettings = myWebView.getSettings();
 
             webSettings.setBuiltInZoomControls(true);
@@ -120,17 +123,20 @@ public class MainActivity extends Activity {
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                     // TODO Auto-generated method stub
                     super.onReceivedError(view, errorCode, description, failingUrl);
-                    myWebView.loadUrl("about:blank");
+                    launchURL = failingUrl;
+                    webView2.loadUrl("about:blank");
                     unconnected();
                 }
 
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                   // launchURL = url;
                     visible();
                 }
 
                 @Override
                 public void onPageFinished(WebView view, String url) {
+                   // launchURL = url;
                     unvisible();
                 }
             });
@@ -194,6 +200,7 @@ public class MainActivity extends Activity {
         }
         else {
            super.onBackPressed();
+           num = 0;
         }
     }
 
@@ -209,66 +216,89 @@ public class MainActivity extends Activity {
         super.onRestoreInstanceState(savedInstanceState);
         myWebView.restoreState(savedInstanceState);
     }
-    /*
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
 
-        if (id == R.id.button) {
-            if (!mbErrorOccured) {
-                return;
-            }
-
-            mbReloadPressed = true;
-            mWebView.reload();
-            mbErrorOccured = false;
-        }
-    }*/
 
     static int num = 0;
     public void visible(){
         if(num == 0) {
             WebView webview = findViewById(R.id.webView);
+            WebView webview2 = findViewById(R.id.webView2);
             ImageView logo = findViewById(R.id.imageView);
             ProgressBar bar = findViewById(R.id.progressBar);
             TextView version = findViewById(R.id.textView);
             TextView broken = findViewById(R.id.broken);
             Button button = findViewById(R.id.button);
             webview.setVisibility(View.GONE);
+            webview2.setVisibility(View.GONE);
             logo.setVisibility(View.VISIBLE);
             bar.setVisibility(View.VISIBLE);
             version.setVisibility(View.VISIBLE);
-            button.setVisibility(View.INVISIBLE);
-            broken.setVisibility(View.INVISIBLE);
-            num = num+1;
+            button.setVisibility(View.GONE);
+            broken.setVisibility(View.GONE);
+            num = 2;
+        }
+        else if((num == 1)||(num == 3)){
+            WebView webview = findViewById(R.id.webView);
+            WebView webview2 = findViewById(R.id.webView2);
+            ImageView logo = findViewById(R.id.imageView);
+            ProgressBar bar = findViewById(R.id.progressBar);
+            TextView version = findViewById(R.id.textView);
+            TextView broken = findViewById(R.id.broken);
+            Button button = findViewById(R.id.button);
+            webview.setVisibility(View.GONE);
+            webview2.setVisibility(View.GONE);
+            logo.setVisibility(View.GONE);
+            bar.setVisibility(View.VISIBLE);
+            version.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
+            broken.setVisibility(View.GONE);
+            num = 2;
         }
     }
 
     public void unvisible(){
-        WebView webview =  findViewById(R.id.webView);
-        ImageView logo =  findViewById(R.id.imageView);
-        ProgressBar bar =  findViewById(R.id.progressBar);
-        TextView version = findViewById(R.id.textView);
-        webview.setVisibility(View.VISIBLE);
-        logo.setVisibility(View.GONE);
-        bar.setVisibility(View.GONE);
-        version.setVisibility(View.GONE);
+        if(num!=1) {
+            WebView webview = findViewById(R.id.webView);
+            WebView webview2 = findViewById(R.id.webView2);
+            ImageView logo = findViewById(R.id.imageView);
+            ProgressBar bar = findViewById(R.id.progressBar);
+            TextView version = findViewById(R.id.textView);
+            webview.setVisibility(View.VISIBLE);
+            webview2.setVisibility(View.GONE);
+            logo.setVisibility(View.GONE);
+            bar.setVisibility(View.GONE);
+            version.setVisibility(View.GONE);
+        }
+        else {
+            WebView webview = findViewById(R.id.webView);
+            WebView webview2 = findViewById(R.id.webView2);
+            ImageView logo = findViewById(R.id.imageView);
+            ProgressBar bar = findViewById(R.id.progressBar);
+            TextView version = findViewById(R.id.textView);
+            webview.setVisibility(View.GONE);
+            webview2.setVisibility(View.VISIBLE);
+            logo.setVisibility(View.GONE);
+            bar.setVisibility(View.GONE);
+            version.setVisibility(View.GONE);
+        }
     }
 
     public void unconnected(){
         WebView webview =  findViewById(R.id.webView);
+        WebView webview2 =  findViewById(R.id.webView2);
         ImageView logo =  findViewById(R.id.imageView);
         ProgressBar bar =  findViewById(R.id.progressBar);
         TextView version = findViewById(R.id.textView);
         TextView broken = findViewById(R.id.broken);
         Button button = findViewById(R.id.button);
-        webview.setVisibility(View.VISIBLE);
+        webview.setVisibility(View.GONE);
+        webview2.setVisibility(View.VISIBLE);
         logo.setVisibility(View.GONE);
         bar.setVisibility(View.GONE);
         version.setVisibility(View.GONE);
         button.setVisibility(View.VISIBLE);
         broken.setVisibility(View.VISIBLE);
        /// Log.d(TAG, "Unconnected");
-        num = 0;
+        num = 1;
     }
 }
