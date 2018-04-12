@@ -1,12 +1,10 @@
 # Ramble Android Mobile Application
 
-### Overview
-
-** WebView **
+### WebView
 
 The Rambler Android application opens up the live www.transyrambler.com website in a WebView. Thanks to the WebView being an internet browser, the interface is automatically formatted for the mobile device. The WebView allows for the official website host to continue being the only thing managing the content, handling user authentication, and controlling the comment system.
 
-** Push Notifications **
+### Push Notifications
 
 Upon first loading the application, the device registers itself with both the [Firebase console](https://firebase.google.com/) and the [OneSignal dashboard](https://onesignal.com/). Both of these services allow for the manual pushing of notifications from the their interface. Within the wp-admin dashboard for the WordPress site, the OneSignal plugin was installed and configured by connecting it to the OneSignal account. Upon an article being posted, the plugin alerts the OneSignal servers which then tells Firebase to send the notification to the appropriate devices.
 
