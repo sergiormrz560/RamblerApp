@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:visibility="gone"/>
 
     <WebView
         android:id="@+id/webView2"
@@ -20,7 +21,8 @@
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/imageView"
@@ -29,14 +31,16 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="46dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        android:visibility="gone"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/textView"
@@ -48,7 +52,8 @@
         android:layout_marginRight="13dp"
         android:text="version 1.0"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#444444" />
+        android:textColor="#444444"
+        android:visibility="gone"/>
 
 
 
@@ -62,7 +67,7 @@
             android:text="RELOAD"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="gone"/>
     <TextView
         android:id="@+id/broken"
         android:layout_width="wrap_content"
@@ -71,23 +76,8 @@
         android:layout_centerHorizontal="true"
         android:text="Ooops, something went wrong..."
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#444444" />
+        android:textColor="#444444"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>
-<!--
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.sergiorm.testramblerapp.MainActivity">
-
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints" />
-</android.support.constraint.ConstraintLayout>-->

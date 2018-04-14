@@ -12,21 +12,21 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
         android:allowBackup="true"
-        android:name=".ApplicationClass"> <!--https://documentation.onesignal.com/docs/create-application-class-android-studio-->
+        android:name=".ApplicationClass">
+        <!--https://documentation.onesignal.com/docs/create-application-class-android-studio-->
 
-        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT" android:value="DISABLE" /> <!--https://stackoverflow.com/questions/41863680/onesignal-android-notificationopenedhandler-start-activity-->
-
+        <!--https://stackoverflow.com/questions/41863680/onesignal-android-notificationopenedhandler-start-activity-->
+        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT"
+            android:value="DISABLE" />
         <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="true" />
-
-        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT" android:value="DISABLE" />
+        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT"
+            android:value="DISABLE" />
 
         <activity android:name=".MainActivity"
             android:configChanges="orientation|screenSize">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
