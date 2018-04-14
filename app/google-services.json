@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:923920766985:android:64b32c3888511cc4",
         "android_client_info": {
-          "package_name": "com.example.sergiorm.testramblerapp"
+          "package_name": "com.rambler.ramblerapp"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "923920766985-04t5iet2fliqn1q6qto1fndu5u0fcorg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.sergiorm.testramblerapp",
+            "package_name": "com.rambler.ramblerapp",
             "certificate_hash": "84ea4908468044e676227c782b2f329e7daa192e"
           }
         },

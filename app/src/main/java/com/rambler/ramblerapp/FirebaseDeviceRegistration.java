@@ -1,16 +1,9 @@
-package com.example.sergiorm.testramblerapp;
+package com.rambler.ramblerapp;
 
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 /**
  *  Class for registering the device with Firebase

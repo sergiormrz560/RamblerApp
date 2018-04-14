@@ -1,4 +1,4 @@
-package com.example.sergiorm.testramblerapp;
+package com.rambler.ramblerapp;
 
 
 import android.annotation.SuppressLint;
@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.DownloadListener;

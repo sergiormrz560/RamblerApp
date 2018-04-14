@@ -1,4 +1,4 @@
-package com.example.sergiorm.testramblerapp;
+package com.rambler.ramblerapp;
 
 import org.junit.Test;
 

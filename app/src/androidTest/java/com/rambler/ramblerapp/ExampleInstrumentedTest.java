@@ -1,4 +1,4 @@
-package com.example.sergiorm.testramblerapp;
+package com.rambler.ramblerapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.sergiorm.testramblerapp", appContext.getPackageName());
+        assertEquals("com.rambler.ramblerapp", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.sergiorm.testramblerapp;
+package com.rambler.ramblerapp;
 
 import android.app.Application;
 import android.content.Intent;
@@ -6,10 +6,7 @@ import android.util.Log;
 
 import com.onesignal.OneSignal;
 
-import com.onesignal.OSNotificationAction;
 import com.onesignal.OSNotificationOpenResult;
-
-import org.json.JSONObject;
 
 /**
  *  ApplicationClass
