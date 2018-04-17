@@ -154,7 +154,7 @@ public class MainActivity extends Activity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 String scheme = Uri.parse(url).getScheme();
-                if(scheme.equals("spotify")||scheme.equals("whatsapp")||scheme.equals("intent")||scheme.equals("twitter")||scheme.equals("facebook")|scheme.equals("soundcloud")||(!url.startsWith("https://www."))) {
+                if(scheme.equals("spotify")||scheme.equals("whatsapp")||scheme.equals("intent")||scheme.equals("twitter")||scheme.equals("fb")|scheme.equals("soundcloud")||(!url.startsWith("https://www."))) {
                      try {
                       /*  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                         return true;*/
